@@ -29,10 +29,10 @@ def check_symbol(symbol):
         response = requests.get(API_BASE + '/products')
         product_ids = [product['id'] for product in response.json()]
         if symbol not in product_ids:
-            logger.warning('Symbol %s not supported. The list of supported symbols: %s', symbol, product_ids)
+            logger.warning('Symbol %s not supported. The list of supported symbols: %s' % (symbol, product_ids))
             exit()
     except Exception as e:
-        logger.warning('Failed to fetch products: %s', e)
+        logger.warning('Failed to fetch products: %s' % e)
 
 # Function to retrieve asset data and send it to kafka
 def fetch_price(symbol, producer, topic_name):
@@ -43,7 +43,7 @@ def fetch_price(symbol, producer, topic_name):
     :param topic_name: name of the kafka topic to push to
     :return None
     """
-    logger.debug('Starting to fetch price for %s', symbol)
+    logger.debug('Starting to fetch price for %s' % symbol)
     try:
         response = requests.get('%s/products/%s/ticker' % (API_BASE, symbol))
         price = response.json()['price']
@@ -53,17 +53,17 @@ def fetch_price(symbol, producer, topic_name):
             'LastTradePrice': str(price),
             'LastTradeDateTime': str(timestamp)
         }
-        logger.debug('Retrieved %s info: %s', symbol, payload)
+        logger.debug('Retrieved %s info: %s' % (symbol, payload))
         producer.send(
             topic = topic_name,
             value = json.dumps(payload).encode('utf-8'),
             timestamp_ms = int(time.time() * 1000)
         )
-        logger.debug('Sent price for %s to Kafka', symbol)
+        logger.debug('Sent price for %s to Kafka' % symbol)
     except KafkaTimeoutError as timeout_error:
-        logger.warning('Failed to send price to kafka, caused by: %s', timeout_error.message)
+        logger.warning('Failed to send price to kafka, caused by: %s' % timeout_error.message)
     except Exception as e:
-        logger.warning('Failed to fetch price: %s', e)
+        logger.warning('Failed to fetch price: %s' % e)
 
 # Function to set up shutdown hook called before shutdown
 def shutdown_hook(producer):
@@ -77,13 +77,13 @@ def shutdown_hook(producer):
         producer.flush(10)
         logger.info('Finish flushing pending messages to kafka')
     except KafkaError as kafka_error:
-        logger.warning('Failed to flush pending messages to kafka, caused by: %s', kafka_error.message)
+        logger.warning('Failed to flush pending messages to kafka, caused by: %s' % kafka_error.message)
     finally:
         try:
             logger.info('Closing kafka connection')
             producer.close(10)
         except Exception as e:
-            logger.warning('Failed to close kafka connection, caused by: %s', e.message)
+            logger.warning('Failed to close kafka connection, caused by: %s' % e.message)
 
 
 # 'main method'
