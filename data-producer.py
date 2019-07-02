@@ -19,6 +19,10 @@ logger.setLevel(logging.DEBUG)
 # Defining constants
 API_BASE = 'https://api.gdax.com'
 
+# Setting default parameters
+topic_name = 'test'
+kafka_broker = '127.0.0.1:9092'
+
 # Function to check if the symbol exists in API
 def check_symbol(symbol):
     """
@@ -51,7 +55,7 @@ def fetch_price(symbol, producer, topic_name):
         payload = {
             'Symbol': str(symbol),
             'LastTradePrice': str(price),
-            'LastTradeDateTime': str(timestamp)
+            'Timestamp': str(timestamp)
         }
         logger.debug('Retrieved %s info: %s' % (symbol, payload))
         producer.send(

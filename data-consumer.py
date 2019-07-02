@@ -3,10 +3,16 @@ import argparse
 
 from kafka import KafkaConsumer
 
+# Setting default parameters
+topic_name = 'test'
+kafka_broker = '127.0.0.1:9092'
+
+# Function to setup kafka consumer
 def consume(topic_name, kafka_broker):
     # Consuming latest messages and auto-commit offsets
     consumer = KafkaConsumer(topic_name, bootstrap_servers = kafka_broker)
 
+    # Just print the messages for now
     for message in consumer:
         print (message)
 
