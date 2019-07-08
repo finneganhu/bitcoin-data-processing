@@ -1,2 +1,5 @@
 venv
 requirements.txt
+counts.txt
+shakespeare.txt
+.DS_Store
