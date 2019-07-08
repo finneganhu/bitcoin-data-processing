@@ -11,7 +11,7 @@ from kafka import KafkaProducer
 # Configuring logger
 logger_format = '%(asctime)s - %(message)s'
 logging.basicConfig(format = logger_format)
-logger = logging.getLogger('data-producer')
+logger = logging.getLogger('data-storage-reader')
 logger.setLevel(logging.DEBUG)
 
 # Function to set up shutdown hook called before shutdown

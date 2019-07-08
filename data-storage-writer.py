@@ -10,7 +10,7 @@ from kafka import KafkaConsumer
 # Configuring logger
 logger_format = '%(asctime)s - %(message)s'
 logging.basicConfig(format = logger_format)
-logger = logging.getLogger('data-producer')
+logger = logging.getLogger('data-storage-writer')
 logger.setLevel(logging.DEBUG)
 
 # Setting default parameters
